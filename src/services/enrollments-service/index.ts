@@ -8,16 +8,21 @@ import { CepFormated } from '../../protocols';
 
 async function getAddressFromCEP(cep: string) {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
+
+  if (!result.data) {
+    throw notFoundError();
+  }
+
+  if (result.data.erro === true) {
+    throw invalidDataError(["não existe"]);
+  }
+
   const resultFormated: CepFormated = {
     logradouro: result.data.logradouro,
     complemento: result.data.complemento,
     bairro: result.data.bairro,
     cidade: result.data.localidade,
     uf: result.data.uf,
-  }
-  if (!result.data) {
-    console.log("result")
-    throw notFoundError();
   }
 
   return resultFormated;
@@ -51,7 +56,7 @@ async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollm
   const enrollment = exclude(params, 'address');
   const address = getAddressForUpsert(params.address);
 
-  // TODO - Verificar se o CEP é válido antes de associar ao enrollment.
+  await getAddressFromCEP(address.cep);
 
   const newEnrollment = await enrollmentRepository.upsert(params.userId, enrollment, exclude(enrollment, 'userId'));
 
