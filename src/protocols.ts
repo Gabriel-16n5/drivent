@@ -22,3 +22,11 @@ export type RequestError = {
 export type Cep = {
   cep: string;
 };
+
+export type CepFormated = {
+  logradouro: string,
+  complemento: string,
+  bairro: string,
+  cidade: string,
+  uf: string,
+};
