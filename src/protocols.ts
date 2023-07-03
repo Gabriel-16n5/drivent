@@ -18,3 +18,7 @@ export type RequestError = {
   name: string;
   message: string;
 };
+
+export type Cep = {
+  cep: string;
+};
