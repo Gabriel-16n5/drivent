@@ -10,12 +10,12 @@ async function checkRequirements(userId: number) {
 
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
   if (!ticket) {throw notFoundError()};
-
-  const hotels = await hotelsRepository.getHotels();
-  if (hotels.length === 0) {throw notFoundError()};
   if(ticket.status !== "PAID"){throw PaymentRequired()}
   if(ticket.TicketType.isRemote === true){throw PaymentRequired()}
   if(ticket.TicketType.includesHotel === false){throw PaymentRequired()}
+
+  const hotels = await hotelsRepository.getHotels();
+  if (hotels.length === 0) {throw notFoundError()};
   if (hotels.length > 0) return hotels;
 };
 
