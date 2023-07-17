@@ -111,7 +111,7 @@ describe('GET /hotels', () => {
     });
   
     describe('valid token', () => {
-      it('should respond with 404 if there is no enrollment', async () => {
+      it('sem pagamento 402', async () => {
         const user = await createUser();
         const token = await generateValidToken(user);
         const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
@@ -140,7 +140,7 @@ describe('GET /hotels', () => {
         const enrollment = await createEnrollmentWithAddress(user);
         const ticketType = await createTicketType();
         await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-        const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
+        const response = await server.get('/hotels/100').set('Authorization', `Bearer ${token}`);
         expect(response.status).toBe(httpStatus.NOT_FOUND);
       });
       it('200 volta info', async () => {
