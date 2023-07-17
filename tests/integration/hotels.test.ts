@@ -39,11 +39,11 @@ describe('GET /hotels', () => {
     });
   
     describe('token válido', () => {
-      it('should respond with status 204 when there is no enrollments', async () => {
+      it('should respond with status 404 when there is no enrollments', async () => {
         const user = await createUser();
         const token = await generateValidToken();
         const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
-        expect(response.status).toBe(httpStatus.NO_CONTENT);
+        expect(response.status).toBe(httpStatus.NOT_FOUND);
       });
       it('não tem/ acabou tickets', async () => {
         const user = await createUser();
@@ -59,7 +59,7 @@ describe('GET /hotels', () => {
         const token = await generateValidToken(user);
         await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
         const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
-        expect(response.status).toBe(httpStatus.NOT_FOUND);
+        expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
       });
       it('402 é remoto', async () => {
         const user = await createUser();
