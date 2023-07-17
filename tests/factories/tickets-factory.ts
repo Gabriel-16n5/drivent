@@ -22,3 +22,39 @@ export async function createTicket(enrollmentId: number, ticketTypeId: number, s
     },
   });
 }
+
+
+export async function createTicketTypeNoHotel() {
+  return prisma.ticketType.create({
+    data: {
+      price: faker.datatype.number(),
+      name: faker.name.findName(),
+      includesHotel: false,
+      isRemote: false
+    },
+  });
+}
+
+
+export async function createTicketTypeRemote() {
+  return prisma.ticketType.create({
+    data: {
+      price: faker.datatype.number(),
+      name: faker.name.findName(),
+      includesHotel: faker.datatype.boolean(),
+      isRemote: true
+    },
+  });
+}
+
+
+export async function createTicketTypeNoRemoteHotel() {
+  return prisma.ticketType.create({
+    data: {
+      price: faker.datatype.number(),
+      name: faker.name.findName(),
+      includesHotel: true,
+      isRemote: false
+    },
+  });
+}
