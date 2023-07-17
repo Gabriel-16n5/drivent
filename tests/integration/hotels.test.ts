@@ -12,7 +12,7 @@ import app, { init } from '@/app';
 
 beforeAll(async () => {
   await init();
-  await cleanDb();
+//   await cleanDb();
 });
 
 beforeEach(async () => {
